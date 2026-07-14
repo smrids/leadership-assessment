@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Emotional Intelligence — Self-Assessment</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0fafb; color: #222; line-height: 1.6; }
+  .container { max-width: 820px; margin: 36px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 18px rgba(0,0,0,.10); padding: 40px 48px 48px; }
+  .header { border-bottom: 3px solid #00838f; padding-bottom: 18px; margin-bottom: 28px; }
+  .logo-row { margin-bottom: 16px; display:flex; align-items:center; gap:12px; }
+  .wordmark { display:flex; align-items:center; gap:10px; }
+  .wordmark .mark { width:44px; height:44px; flex-shrink:0; }
+  .wordmark .txt { font-size:.82rem; font-weight:700; color:#005662; line-height:1.15; }
+  .wordmark .txt span { display:block; font-weight:600; color:#4a7c82; font-size:.72rem; }
+  .back-link { font-size:.82rem; color:#00838f; text-decoration:none; margin-bottom:14px; display:inline-block; font-weight:600; }
+  .back-link:hover { text-decoration:underline; }
+  .header h1 { font-size: 1.6rem; color: #005662; margin-bottom: 6px; }
+  .header p  { color: #555; font-size: .95rem; }
+  .tag-row   { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  .tag { background: #e0f2f1; color: #005662; border-radius: 20px; padding: 3px 13px; font-size: .82rem; font-weight: 600; }
+  .attribution { margin-top: 10px; font-size: .8rem; color: #777; font-style: italic; }
+  .purpose { background: #e0f7fa; border-left: 4px solid #00838f; border-radius: 0 6px 6px 0; padding: 14px 18px; margin-bottom: 22px; font-size: .93rem; }
+  .purpose strong { color: #005662; }
+  .instructions { background: #fffbec; border: 1px solid #f0d060; border-radius: 6px; padding: 14px 18px; margin-bottom: 26px; font-size: .92rem; }
+  .instructions strong { color:#8a6d00; }
+  .scale-row { display:flex; gap:14px; flex-wrap:wrap; margin-top:10px; font-size:.88rem; }
+  .scale-item { display:flex; align-items:center; gap:5px; }
+  .scale-letter { width:24px; height:24px; border-radius:50%; background:#00838f; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.8rem; }
+  .identity { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:26px; }
+  .identity .fld { flex:1; min-width:220px; }
+  .identity label { display:block; font-size:.8rem; font-weight:600; color:#555; margin-bottom:4px; }
+  .identity input { width:100%; padding:9px 12px; border:1px solid #cdd7de; border-radius:6px; font-size:.92rem; font-family:inherit; }
+  .identity input:focus { outline:none; border-color:#00838f; }
+  .section-title { font-size: 1.05rem; font-weight: 700; color: #005662; border-bottom: 2px solid #dde4ee; padding-bottom: 8px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: .04em; }
+
+  .q { display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid #eef0f4; }
+  .q:last-of-type { border-bottom:none; }
+  .q-num { min-width:26px; font-weight:700; color:#00838f; font-size:.9rem; }
+  .q-text { flex:1; font-size:.93rem; }
+  .likert { display:flex; gap:5px; flex-shrink:0; }
+  .likert label { cursor:pointer; }
+  .likert input { display:none; }
+  .likert .dot { width:30px; height:30px; border-radius:50%; border:2px solid #b0bcc8; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.82rem; color:#888; transition:all .12s; }
+  .likert input:checked + .dot { background:#00838f; border-color:#00838f; color:#fff; }
+  .likert label:hover .dot { border-color:#00838f; color:#00838f; }
+
+  .progress-label { font-size: .82rem; color: #666; margin: 24px 0 6px; }
+  .progress-wrap { background: #e9ecef; border-radius: 10px; overflow: hidden; height: 8px; margin-bottom:26px; }
+  .progress-bar { height: 100%; background: #00838f; border-radius: 10px; transition: width .3s ease; width: 0%; }
+  .submit-wrap { text-align: center; margin-top: 30px; }
+  .btn-submit { background: #00838f; color: #fff; border: none; border-radius: 6px; padding: 13px 44px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background .2s; }
+  .btn-submit:hover { background: #005662; }
+  .incomplete-msg { color: #c0392b; font-size: .88rem; margin-top: 10px; display: none; }
+
+  #results { display: none; margin-top: 40px; }
+  .results-header { text-align: center; margin-bottom: 24px; }
+  .results-header h2 { color: #005662; font-size: 1.4rem; margin-bottom: 6px; }
+  .results-header p { color: #555; font-size: .9rem; }
+  .save-status { text-align: center; font-size: .82rem; min-height: 22px; margin-bottom: 14px; }
+  .save-status.saving { color: #888; } .save-status.saved { color: #00897b; font-weight: 600; } .save-status.failed { color: #c0392b; }
+
+  .comp-card { border-radius:8px; padding:16px 20px; margin-bottom:14px; background:#f7fafb; border:1px solid #e0e8ea; }
+  .comp-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px; }
+  .comp-head h3 { font-size:1rem; color:#005662; }
+  .band { display:inline-block; padding:3px 12px; border-radius:20px; font-size:.78rem; font-weight:700; }
+  .band-strength { background:#00838f; color:#fff; }
+  .band-attention { background:#f39c12; color:#fff; }
+  .band-priority { background:#c0392b; color:#fff; }
+  .bar-track { background: #e9ecef; border-radius: 6px; height: 14px; overflow: hidden; margin-bottom:6px; }
+  .bar-fill { height: 100%; border-radius: 6px; transition: width .8s ease; background:#00838f; }
+  .comp-card p { font-size:.88rem; color:#555; }
+
+  .reflection { background: #e0f7fa; border-left: 4px solid #00838f; border-radius: 0 6px 6px 0; padding: 18px 22px; margin: 20px 0 26px; }
+  .reflection h3 { color: #005662; font-size: .95rem; font-weight: 700; margin-bottom: 8px; }
+  .reflection p { font-size: .93rem; color: #444; }
+  .save-wrap { text-align: center; margin-top: 8px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-save { background: #fff; color: #00838f; border: 2px solid #00838f; border-radius: 6px; padding: 11px 26px; font-size: .95rem; font-weight: 600; cursor: pointer; transition: all .2s; }
+  .btn-save:hover { background: #00838f; color: #fff; }
+  .btn-retake { background: #f4f6f9; color: #555; border: 2px solid #ccc; border-radius: 6px; padding: 11px 26px; font-size: .95rem; font-weight: 600; cursor: pointer; }
+  .btn-retake:hover { background: #dde; }
+
+  @media print {
+    body { background: #fff; }
+    .container { box-shadow: none; margin: 0; padding: 24px; }
+    #questionnaire, .progress-wrap, .progress-label, .submit-wrap, .save-wrap, .instructions, .identity, .back-link { display: none !important; }
+    #results { display: block !important; }
+    .btn-save, .btn-retake { display: none; }
+  }
+  @media (max-width: 600px) { .container { padding: 20px 16px; } .likert .dot { width:26px; height:26px; font-size:.72rem; } .q { gap:8px; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="index.html" class="back-link">← All assessments</a>
+  <div class="header">
+    <div class="logo-row">
+      <div class="wordmark">
+        <svg class="mark" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="22" cy="22" r="21" fill="#00838f"/>
+          <path d="M8 27c3 0 3-3 6-3s3 3 6 3 3-3 6-3 3 3 6 3 3-3 4-3" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M22 9c3.5 4.5 6 8 6 11a6 6 0 1 1-12 0c0-3 2.5-6.5 6-11z" fill="#7fdfe8"/>
+        </svg>
+        <div class="txt">Global Drowning Prevention<span>Leadership Institute</span></div>
+      </div>
+    </div>
+    <h1>Emotional Intelligence Questionnaire</h1>
+    <p>Reflect on the competences of emotional intelligence as they apply to you.</p>
+    <div class="tag-row">
+      <span class="tag">50 Statements</span>
+      <span class="tag">~8 minutes</span>
+      <span class="tag">Results shown instantly</span>
+      <span class="tag">Responses logged to Google Sheets</span>
+    </div>
+    <div class="attribution">Based on Daniel Goleman's model of emotional intelligence</div>
+  </div>
+
+  <div class="purpose">
+    <strong>Purpose:</strong> Truly effective leaders are distinguished by a high degree of emotional intelligence across
+    five competences: <em>Self-awareness</em>, <em>Managing emotions</em>, <em>Motivating oneself</em>, <em>Empathy</em>
+    and <em>Social skill</em>. This tool helps you reflect on each.
+  </div>
+
+  <div class="instructions">
+    <strong>Instructions:</strong> Read each statement and decide how strongly it applies to <strong>you</strong>.
+    Score 1 to 5. This is not a validated psychometric test — your answers may vary with your mood.
+    <div class="scale-row">
+      <div class="scale-item"><div class="scale-letter">1</div> Does not apply</div>
+      <div class="scale-item"><div class="scale-letter">3</div> Applies half the time</div>
+      <div class="scale-item"><div class="scale-letter">5</div> Always applies</div>
+    </div>
+  </div>
+
+  <div class="identity">
+    <div class="fld"><label for="pname">Your name (optional)</label><input type="text" id="pname" placeholder="e.g. Jordan Lee" /></div>
+    <div class="fld"><label for="pemail">Email (optional)</label><input type="email" id="pemail" placeholder="e.g. jordan@example.org" /></div>
+  </div>
+
+  <div id="questionnaire">
+    <div class="section-title">Score each statement 1 – 5</div>
+    <div id="q-container"></div>
+    <div class="progress-label"><span id="progress-text">0 of 50 answered</span></div>
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="submit-wrap">
+      <button class="btn-submit" id="submitBtn" onclick="submitSurvey()">Calculate My EI Profile</button>
+      <div class="incomplete-msg" id="incompleteMsg">Please score all 50 statements before submitting.</div>
+    </div>
+  </div>
+
+  <div id="results">
+    <div class="results-header">
+      <h2>Your Emotional Intelligence Profile</h2>
+      <p>Scores for each competency range from 10 to 50.</p>
+    </div>
+    <div class="save-status" id="saveStatus"></div>
+    <div id="comp-cards"></div>
+    <div class="reflection">
+      <h3>Reflection Prompt</h3>
+      <p>Which one or two competencies would most benefit from your attention? Identify a small action you can take this
+      week to strengthen your weakest area.</p>
+    </div>
+    <div class="save-wrap">
+      <button class="btn-save" onclick="downloadResults()">⬇ Download My Results</button>
+      <button class="btn-save" onclick="window.print()">🖨 Save / Print</button>
+      <button class="btn-retake" onclick="retake()">↩ Retake</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ENDPOINT = "";
+const ASSESSMENT = "Emotional Intelligence";
+
+const STATEMENTS = [
+  "I realise immediately when I lose my temper",
+  "I can 'reframe' bad situations quickly",
+  "I am able to always motivate myself to do difficult tasks",
+  "I am always able to see things from the other person's viewpoint",
+  "I am an excellent listener",
+  "I know when I am happy",
+  "I do not wear my 'heart on my sleeve'",
+  "I am usually able to prioritise important activities at work and get on with them",
+  "I am excellent at empathising with someone else's problem",
+  "I never interrupt other people's conversations",
+  "I usually recognise when I am stressed",
+  "Others can rarely tell what kind of mood I am in",
+  "I always meet deadlines",
+  "I can tell if someone is not happy with me",
+  "I am good at adapting and mixing with a variety of people",
+  "When I am being 'emotional' I am aware of this",
+  "I rarely 'fly off the handle' at other people",
+  "I never waste time",
+  "I can tell if a team of people are not getting along with each other",
+  "People are the most interesting thing in life for me",
+  "When I feel anxious I usually can account for the reason(s)",
+  "Difficult people do not annoy me",
+  "I do not prevaricate",
+  "I can usually understand why people are being difficult towards me",
+  "I love to meet new people and get to know what makes them 'tick'",
+  "I always know when I'm being unreasonable",
+  "I can consciously alter my frame of mind or mood",
+  "I believe you should do the difficult things first",
+  "Other individuals are not 'difficult' just 'different'",
+  "I need a variety of work colleagues to make my job interesting",
+  "Awareness of my own emotions is very important to me at all times",
+  "I do not let stressful situations or people affect me once I have left work",
+  "Delayed gratification is a virtue that I hold to",
+  "I can understand if I am being unreasonable",
+  "I like to ask questions to find out what is important to people",
+  "I can tell if someone has upset or annoyed me",
+  "I rarely worry about work or life in general",
+  "I believe in 'Action this Day'",
+  "I can understand why my actions sometimes offend others",
+  "I see working with difficult people as simply a challenge to win them over",
+  "I can let anger 'go' quickly so that it no longer affects me",
+  "I can suppress my emotions when I need to",
+  "I can always motivate myself even when I feel low",
+  "I can sometimes see things from others' point of view",
+  "I am good at reconciling differences with other people",
+  "I know what makes me happy",
+  "Others often do not know how I am feeling about things",
+  "Motivation has been the key to my success",
+  "Reasons for disagreements are always clear to me",
+  "I generally build solid relationships with those I work with"
+];
+
+// Competency -> statement numbers (1-based)
+const COMPS = [
+  {key:"SA", name:"Self-awareness",     items:[1,6,11,16,21,26,31,36,41,46], blurb:"Recognising what you feel and how your emotions affect your behaviour and performance."},
+  {key:"ME", name:"Managing emotions",  items:[2,7,12,17,22,27,32,37,42,47], blurb:"Staying focused and thinking clearly even when experiencing powerful emotions."},
+  {key:"MO", name:"Motivating oneself", items:[3,8,13,18,23,28,33,38,43,48], blurb:"Using your deepest emotions to move toward goals, take initiative and persevere."},
+  {key:"E",  name:"Empathy",            items:[4,9,14,19,24,29,34,39,44,49], blurb:"Sensing, understanding and responding to what other people are feeling."},
+  {key:"SS", name:"Social skill",       items:[5,10,15,20,25,30,35,40,45,50], blurb:"Managing, influencing and inspiring emotions in others; handling relationships."}
+];
+
+function bandOf(total) {
+  if (total >= 35) return {label:"Strength", cls:"band-strength", note:"This area is a strength for you."};
+  if (total >= 18) return {label:"Needs attention", cls:"band-attention", note:"Giving attention here will pay dividends."};
+  return {label:"Development priority", cls:"band-priority", note:"Make this area a development priority."};
+}
+
+function renderQuestions() {
+  const c = document.getElementById('q-container');
+  STATEMENTS.forEach((t,i) => {
+    const n = i+1;
+    const dots = [1,2,3,4,5].map(v=>`
+      <label><input type="radio" name="q${n}" value="${v}" onchange="onAnswer()"/><div class="dot">${v}</div></label>`).join('');
+    const div = document.createElement('div');
+    div.className='q'; div.id='q-'+n;
+    div.innerHTML = `<div class="q-num">${n}.</div><div class="q-text">${t}</div><div class="likert">${dots}</div>`;
+    c.appendChild(div);
+  });
+}
+function getAnswer(n){ const el=document.querySelector(`input[name="q${n}"]:checked`); return el?+el.value:null; }
+function onAnswer(){
+  const answered = STATEMENTS.filter((_,i)=>getAnswer(i+1)!==null).length;
+  document.getElementById('progressBar').style.width=(answered/50*100)+'%';
+  document.getElementById('progress-text').textContent=`${answered} of 50 answered`;
+}
+
+function submitSurvey() {
+  const un=[]; for(let n=1;n<=50;n++){ if(getAnswer(n)===null) un.push(n); }
+  if (un.length) {
+    document.getElementById('incompleteMsg').style.display='block';
+    document.getElementById('q-'+un[0]).scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  document.getElementById('incompleteMsg').style.display='none';
+  const totals={}; const answers={};
+  for(let n=1;n<=50;n++) answers[n]=getAnswer(n);
+  COMPS.forEach(c=> totals[c.key]=c.items.reduce((s,n)=>s+answers[n],0));
+  renderResults(totals, answers);
+  document.getElementById('questionnaire').style.display='none';
+  document.getElementById('results').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+  logToSheet(totals, answers);
+}
+
+function renderResults(totals, answers) {
+  document.getElementById('comp-cards').innerHTML = COMPS.map(c=>{
+    const t=totals[c.key]; const b=bandOf(t); const pct=Math.round((t-10)/40*100);
+    return `<div class="comp-card">
+      <div class="comp-head"><h3>${c.name} — ${t}/50</h3><span class="band ${b.cls}">${b.label}</span></div>
+      <div class="bar-track"><div class="bar-fill" id="eibf-${c.key}" style="width:0%"></div></div>
+      <p>${c.blurb} <b>${b.note}</b></p></div>`;
+  }).join('');
+  setTimeout(()=>{ COMPS.forEach(c=>{ const el=document.getElementById('eibf-'+c.key); if(el) el.style.width=Math.round((totals[c.key]-10)/40*100)+'%'; }); },60);
+  window._lastResult = {totals, answers};
+}
+
+function logToSheet(totals, answers) {
+  const status=document.getElementById('saveStatus');
+  if(!ENDPOINT){ status.textContent="Results ready — logging not configured (you can still download below)."; return; }
+  status.className="save-status saving"; status.textContent="Saving your response…";
+  const body=new URLSearchParams();
+  body.append("assessment",ASSESSMENT);
+  body.append("timestamp",new Date().toISOString());
+  body.append("name",document.getElementById('pname').value||"");
+  body.append("email",document.getElementById('pemail').value||"");
+  COMPS.forEach(c=> body.append(c.name, totals[c.key]));
+  body.append("answers", JSON.stringify(answers));
+  fetch(ENDPOINT,{method:"POST",mode:"no-cors",body})
+    .then(()=>{status.className="save-status saved";status.textContent="✓ Response saved to Google Sheets.";})
+    .catch(()=>{status.className="save-status failed";status.textContent="Could not save automatically — please download your results below.";});
+}
+
+function downloadResults() {
+  const r=window._lastResult; if(!r) return;
+  const rows=[
+    ["Assessment",ASSESSMENT],
+    ["Name",document.getElementById('pname').value||""],
+    ["Email",document.getElementById('pemail').value||""],
+    ["Date",new Date().toLocaleString()],
+    [],
+    ["Competency","Score (of 50)","Result"],
+    ...COMPS.map(c=>[c.name, r.totals[c.key], bandOf(r.totals[c.key]).label])
+  ];
+  const csv=rows.map(row=>row.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\r\n");
+  const blob=new Blob([csv],{type:"text/csv"}); const url=URL.createObjectURL(blob);
+  const a=document.createElement("a"); a.href=url; a.download="emotional-intelligence-results.csv";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+function retake() {
+  for(let n=1;n<=50;n++) document.querySelectorAll(`input[name="q${n}"]`).forEach(i=>i.checked=false);
+  document.getElementById('progressBar').style.width='0%';
+  document.getElementById('progress-text').textContent='0 of 50 answered';
+  document.getElementById('results').style.display='none';
+  document.getElementById('questionnaire').style.display='block';
+  document.getElementById('saveStatus').textContent='';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+renderQuestions();
+</script>
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Leadership Animal Style — Self-Assessment</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0fafb; color: #222; line-height: 1.6; }
+  .container { max-width: 820px; margin: 36px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 18px rgba(0,0,0,.10); padding: 40px 48px 48px; }
+
+  /* Header */
+  .header { border-bottom: 3px solid #00838f; padding-bottom: 18px; margin-bottom: 28px; }
+  .logo-row { margin-bottom: 16px; display:flex; align-items:center; gap:12px; }
+  .wordmark { display:flex; align-items:center; gap:10px; }
+  .wordmark .mark { width:44px; height:44px; flex-shrink:0; }
+  .wordmark .txt { font-size:.82rem; font-weight:700; color:#005662; line-height:1.15; letter-spacing:.01em; }
+  .wordmark .txt span { display:block; font-weight:600; color:#4a7c82; font-size:.72rem; }
+  .back-link { font-size:.82rem; color:#00838f; text-decoration:none; margin-bottom:14px; display:inline-block; font-weight:600; }
+  .back-link:hover { text-decoration:underline; }
+  .header h1 { font-size: 1.6rem; color: #005662; margin-bottom: 6px; }
+  .header p  { color: #555; font-size: .95rem; }
+  .tag-row   { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  .tag { background: #e0f2f1; color: #005662; border-radius: 20px; padding: 3px 13px; font-size: .82rem; font-weight: 600; }
+  .attribution { margin-top: 10px; font-size: .8rem; color: #777; font-style: italic; }
+
+  /* Purpose / instructions */
+  .purpose { background: #e0f7fa; border-left: 4px solid #00838f; border-radius: 0 6px 6px 0; padding: 14px 18px; margin-bottom: 22px; font-size: .93rem; }
+  .purpose strong { color: #005662; }
+  .instructions { background: #fffbec; border: 1px solid #f0d060; border-radius: 6px; padding: 14px 18px; margin-bottom: 26px; font-size: .92rem; }
+  .instructions strong { color:#8a6d00; }
+
+  /* Identity fields */
+  .identity { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:26px; }
+  .identity .fld { flex:1; min-width:220px; }
+  .identity label { display:block; font-size:.8rem; font-weight:600; color:#555; margin-bottom:4px; }
+  .identity input { width:100%; padding:9px 12px; border:1px solid #cdd7de; border-radius:6px; font-size:.92rem; font-family:inherit; }
+  .identity input:focus { outline:none; border-color:#00838f; }
+
+  /* Section */
+  .section-title { font-size: 1.05rem; font-weight: 700; color: #005662; border-bottom: 2px solid #dde4ee; padding-bottom: 8px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: .04em; }
+
+  /* Ranking rows */
+  .rank-row { padding:16px 0; border-bottom:1px solid #eef0f4; }
+  .rank-row:last-of-type { border-bottom:none; }
+  .rank-head { font-size:.82rem; color:#888; margin-bottom:8px; }
+  .rank-head b { color:#00838f; }
+  .word-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+  .word { position:relative; border:2px solid #b0bcc8; border-radius:8px; padding:12px 8px; text-align:center; cursor:pointer; font-size:.9rem; font-weight:600; color:#444; background:#fff; transition:all .12s; user-select:none; }
+  .word:hover { border-color:#00838f; color:#00838f; }
+  .word.ranked { border-color:#00838f; background:#e0f2f1; color:#005662; }
+  .word .badge { position:absolute; top:-10px; right:-10px; width:26px; height:26px; border-radius:50%; background:#00838f; color:#fff; font-size:.85rem; font-weight:800; display:none; align-items:center; justify-content:center; }
+  .word.ranked .badge { display:flex; }
+
+  /* Progress */
+  .progress-label { font-size: .82rem; color: #666; margin: 24px 0 6px; }
+  .progress-wrap { background: #e9ecef; border-radius: 10px; overflow: hidden; height: 8px; margin-bottom:26px; }
+  .progress-bar { height: 100%; background: #00838f; border-radius: 10px; transition: width .3s ease; width: 0%; }
+
+  /* Submit */
+  .submit-wrap { text-align: center; margin-top: 30px; }
+  .btn-submit { background: #00838f; color: #fff; border: none; border-radius: 6px; padding: 13px 44px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background .2s; }
+  .btn-submit:hover { background: #005662; }
+  .incomplete-msg { color: #c0392b; font-size: .88rem; margin-top: 10px; display: none; }
+
+  /* Results */
+  #results { display: none; margin-top: 40px; }
+  .results-header { text-align: center; margin-bottom: 24px; }
+  .results-header h2 { color: #005662; font-size: 1.4rem; margin-bottom: 6px; }
+  .results-header p { color: #555; font-size: .9rem; }
+  .save-status { text-align: center; font-size: .82rem; min-height: 22px; margin-bottom: 14px; }
+  .save-status.saving { color: #888; } .save-status.saved { color: #00897b; font-weight: 600; } .save-status.failed { color: #c0392b; }
+
+  .animal-box { border-radius:10px; padding:26px 30px; margin-bottom:26px; text-align:center; background:#e0f7fa; border:2px solid #00838f; }
+  .animal-emoji { font-size:2.8rem; margin-bottom:6px; }
+  .animal-name { font-size:1.35rem; font-weight:800; color:#005662; margin-bottom:4px; }
+  .animal-sub { font-size:.9rem; color:#00838f; font-weight:600; margin-bottom:10px; }
+  .animal-desc { font-size:.94rem; color:#444; max-width:560px; margin:0 auto; }
+
+  .bar-row { margin-bottom: 14px; }
+  .bar-label { display: flex; justify-content: space-between; font-size: .85rem; margin-bottom: 4px; }
+  .bar-track { background: #e9ecef; border-radius: 6px; height: 16px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; transition: width .8s ease; display:flex; align-items:center; justify-content:flex-end; color:#fff; font-size:.7rem; font-weight:700; padding-right:6px; }
+  .bar-D { background:#e53935; } .bar-I { background:#fb8c00; } .bar-S { background:#43a047; } .bar-C { background:#00838f; }
+
+  .detail-card { border-radius:8px; padding:18px 22px; margin-bottom:16px; background:#f7fafb; border:1px solid #e0e8ea; }
+  .detail-card h3 { font-size:1rem; color:#005662; margin-bottom:8px; }
+  .detail-card ul { margin:6px 0 6px 20px; font-size:.9rem; color:#444; }
+  .detail-card .lbl { font-weight:700; color:#00838f; font-size:.85rem; }
+
+  .reflection { background: #e0f7fa; border-left: 4px solid #00838f; border-radius: 0 6px 6px 0; padding: 18px 22px; margin: 20px 0 26px; }
+  .reflection h3 { color: #005662; font-size: .95rem; font-weight: 700; margin-bottom: 8px; }
+  .reflection p { font-size: .93rem; color: #444; }
+
+  .save-wrap { text-align: center; margin-top: 8px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-save { background: #fff; color: #00838f; border: 2px solid #00838f; border-radius: 6px; padding: 11px 26px; font-size: .95rem; font-weight: 600; cursor: pointer; transition: all .2s; }
+  .btn-save:hover { background: #00838f; color: #fff; }
+  .btn-retake { background: #f4f6f9; color: #555; border: 2px solid #ccc; border-radius: 6px; padding: 11px 26px; font-size: .95rem; font-weight: 600; cursor: pointer; }
+  .btn-retake:hover { background: #dde; }
+
+  @media print {
+    body { background: #fff; }
+    .container { box-shadow: none; margin: 0; padding: 24px; }
+    #questionnaire, .progress-wrap, .progress-label, .submit-wrap, .save-wrap, .instructions, .identity, .back-link { display: none !important; }
+    #results { display: block !important; }
+    .btn-save, .btn-retake { display: none; }
+  }
+  @media (max-width: 600px) {
+    .container { padding: 20px 16px; }
+    .word { font-size:.8rem; padding:10px 4px; }
+    .word-grid { gap:5px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="index.html" class="back-link">← All assessments</a>
+  <div class="header">
+    <div class="logo-row">
+      <!-- LOGO SLOT: replace this wordmark block with <img src="gdpli-logo.png" class="org-logo" alt="GDPLI"> if you add the logo file -->
+      <div class="wordmark">
+        <svg class="mark" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="22" cy="22" r="21" fill="#00838f"/>
+          <path d="M8 27c3 0 3-3 6-3s3 3 6 3 3-3 6-3 3 3 6 3 3-3 4-3" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M22 9c3.5 4.5 6 8 6 11a6 6 0 1 1-12 0c0-3 2.5-6.5 6-11z" fill="#7fdfe8"/>
+        </svg>
+        <div class="txt">Global Drowning Prevention<span>Leadership Institute</span></div>
+      </div>
+    </div>
+    <h1>Leadership Animal Style</h1>
+    <p>Discover your natural behavioural style — are you a Lion, Otter, Golden Retriever, or Beaver?</p>
+    <div class="tag-row">
+      <span class="tag">9 Rankings</span>
+      <span class="tag">~4 minutes</span>
+      <span class="tag">Results shown instantly</span>
+      <span class="tag">Responses logged to Google Sheets</span>
+    </div>
+    <div class="attribution">Adapted from the DISC behavioural styles model (Lion / Otter / Golden Retriever / Beaver)</div>
+  </div>
+
+  <div class="purpose">
+    <strong>Purpose:</strong> Recent research on how people naturally sense, conceptualise and respond to situations
+    points to four basic behaviour styles — <em>Directing (D)</em>, <em>Influencing (I)</em>, <em>Steady (S)</em> and
+    <em>Cautious (C)</em>. This profile reveals which style you bring the most energy to.
+  </div>
+
+  <div class="instructions">
+    <strong>Instructions:</strong> Each row below has four words. Click them in order from
+    <strong>most</strong> to <strong>least</strong> characteristic of you — your first click scores <strong>4</strong>,
+    then <strong>3</strong>, <strong>2</strong> and <strong>1</strong>. Click a word again to clear the row and start over.
+    Every row must have all four words ranked.
+  </div>
+
+  <div class="identity">
+    <div class="fld"><label for="pname">Your name (optional)</label><input type="text" id="pname" placeholder="e.g. Jordan Lee" /></div>
+    <div class="fld"><label for="email">Email (optional)</label><input type="email" id="pemail" placeholder="e.g. jordan@example.org" /></div>
+  </div>
+
+  <div id="questionnaire">
+    <div class="section-title">Rank each row 4 → 1</div>
+    <div id="rows-container"></div>
+
+    <div class="progress-label"><span id="progress-text">0 of 9 rows completed</span></div>
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+    <div class="submit-wrap">
+      <button class="btn-submit" id="submitBtn" onclick="submitSurvey()">Reveal My Animal Style</button>
+      <div class="incomplete-msg" id="incompleteMsg">Please rank all four words in every row before submitting.</div>
+    </div>
+  </div>
+
+  <div id="results">
+    <div class="results-header">
+      <h2>Your Behavioural Style Profile</h2>
+      <p>Based on your rankings across all 9 rows (your four scores total 90).</p>
+    </div>
+    <div class="save-status" id="saveStatus"></div>
+
+    <div class="animal-box" id="animalBox">
+      <div class="animal-emoji" id="animalEmoji">🦁</div>
+      <div class="animal-name" id="animalName">—</div>
+      <div class="animal-sub" id="animalSub">—</div>
+      <div class="animal-desc" id="animalDesc">—</div>
+    </div>
+
+    <div id="bars"></div>
+    <div id="detail"></div>
+
+    <div class="reflection">
+      <h3>Reflection Prompt</h3>
+      <p>Does your strongest style match how you see yourself? Which of your lower styles could you draw on more when a
+      situation calls for it?</p>
+    </div>
+
+    <div class="save-wrap">
+      <button class="btn-save" onclick="downloadResults()">⬇ Download My Results</button>
+      <button class="btn-save" onclick="window.print()">🖨 Save / Print</button>
+      <button class="btn-retake" onclick="retake()">↩ Retake</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────────────────────
+// Paste your Apps Script /exec URL here to enable Google Sheets logging.
+// Leave as "" and the page still works (results shown + downloadable), just not logged.
+const ENDPOINT = "";
+const ASSESSMENT = "Leadership Animal Style";
+
+// ── Data: 9 rows, columns are D, I, S, C ──────────────────────────────────
+const ROWS = [
+  ["Self-Certain","Optimistic","Deliberate","Restrained"],
+  ["Adventurous","Enthusiastic","Predictable","Logical"],
+  ["Decisive","Open","Patient","Analytical"],
+  ["Daring","Impulsive","Stabilizing","Precise"],
+  ["Restless","Emotional","Protective","Doubting"],
+  ["Competitive","Persuading","Accommodating","Curious"],
+  ["Assertive","Talkative","Modest","Tactful"],
+  ["Experimenting","Charming","Easy-Going","Consistent"],
+  ["Forceful","Sensitive","Sincere","Perfectionist"]
+];
+const DIMS = ["D","I","S","C"];
+
+const ANIMALS = {
+  D: { name:"Lion", emoji:"🦁", style:"Directing style (D)",
+       desc:"Results-driven, decisive and competitive. You move people to action, cause change and thrive on challenge, freedom and difficult assignments.",
+       motivation:"Results, challenge",
+       desires:["Freedom and authority","Varied activities and difficult assignments","Opportunities for advancement"],
+       responds:["People who give direct answers and stick to business","Logic and a bit of pressure","Freedom for personal accomplishment"],
+       learn:["You need people","Relaxation time is not a crime","Some controls are needed — everyone has a boss","Explaining why you reached a conclusion matters"],
+       limits:["Impatience","Selective listening","Blind spots about others' views and feelings"] },
+  I: { name:"Otter", emoji:"🦦", style:"Influencing style (I)",
+       desc:"Optimistic and people-oriented. Socially energetic and persuasive, you love to entertain, motivate and verbalise ideas.",
+       motivation:"Recognition, approval",
+       desires:["Prestige and friendly relationships","Freedom from control and detail","Opportunities to help and motivate people","A platform to share ideas"],
+       responds:["People who are democratic and friendly","Social involvement (fun) alongside the work","Recognition of abilities and risk-taking"],
+       learn:["Time control helps","Deadlines are important","There is such a thing as too much optimism"],
+       limits:["Can be unorganised in accomplishing tasks unless also a high D"] },
+  S: { name:"Golden Retriever", emoji:"🐕", style:"Steady style (S)",
+       desc:"Pragmatic, loyal team player. You like concrete results and clear procedures, and you value stability and strong relationships.",
+       motivation:"Relationships, appreciation",
+       desires:["Specialisation and being part of a team","Established daily patterns and a familiar environment","Clearly defined goals and steps to reach them"],
+       responds:["People who are relaxed and amiable","Time to adjust to change","A friend who allows them to work at their own pace and gives personal support"],
+       learn:["Change can create opportunity","You can't be best friends with everybody","Sharing your own needs and feelings matters, not just listening"],
+       limits:["Possessiveness and a strong desire for order/tranquillity can limit decisive action in difficult situations"] },
+  C: { name:"Beaver", emoji:"🦫", style:"Cautious style (C)",
+       desc:"Accurate and precise, focused on quality and doing things the correct way. Disciplined, intuitive and a careful planner.",
+       motivation:"To do things right, quality control",
+       desires:["Clearly defined tasks and stability","Security in relationships and situations","Assignments requiring precision and careful planning","Limited risk"],
+       responds:["People who provide consistent reassurance","A supportive atmosphere and open door for questions","Detailed operating standards"],
+       learn:["Total support is not always possible","Thorough explanation isn't everything","Deadlines must be met","Predictability does not equal being boring"],
+       limits:["Overly critical and demanding of self and others due to high standards; rarely voices criticism"] }
+};
+
+// ── State ──────────────────────────────────────────────────────────────────
+// rank[rowIndex] = array of 4 numbers (0 = unranked), indexed by column
+let rank = ROWS.map(()=>[0,0,0,0]);
+
+function renderRows() {
+  const c = document.getElementById('rows-container');
+  ROWS.forEach((words, ri) => {
+    const row = document.createElement('div');
+    row.className = 'rank-row';
+    const cells = words.map((w, ci) => `
+      <div class="word" id="w-${ri}-${ci}" onclick="clickWord(${ri},${ci})">
+        ${w}<div class="badge" id="b-${ri}-${ci}"></div>
+      </div>`).join('');
+    row.innerHTML = `<div class="rank-head">Row ${ri+1} — <b>most</b> to <b>least</b> like you</div>
+                     <div class="word-grid">${cells}</div>`;
+    c.appendChild(row);
+  });
+}
+
+function clickWord(ri, ci) {
+  const cur = rank[ri][ci];
+  if (cur > 0) { rank[ri] = [0,0,0,0]; refreshRow(ri); updateProgress(); return; }
+  const used = rank[ri].filter(v=>v>0).length; // 0..3
+  const nextRank = 4 - used; // 4,3,2,1
+  rank[ri][ci] = nextRank;
+  refreshRow(ri);
+  updateProgress();
+}
+
+function refreshRow(ri) {
+  for (let ci=0; ci<4; ci++) {
+    const cell = document.getElementById(`w-${ri}-${ci}`);
+    const badge = document.getElementById(`b-${ri}-${ci}`);
+    const v = rank[ri][ci];
+    if (v>0) { cell.classList.add('ranked'); badge.textContent = v; }
+    else { cell.classList.remove('ranked'); badge.textContent = ''; }
+  }
+}
+
+function rowComplete(ri){ return rank[ri].filter(v=>v>0).length === 4; }
+
+function updateProgress() {
+  const done = ROWS.reduce((n,_,ri)=> n + (rowComplete(ri)?1:0), 0);
+  document.getElementById('progressBar').style.width = (done/ROWS.length*100)+'%';
+  document.getElementById('progress-text').textContent = `${done} of ${ROWS.length} rows completed`;
+}
+
+function submitSurvey() {
+  const firstIncomplete = ROWS.findIndex((_,ri)=>!rowComplete(ri));
+  if (firstIncomplete !== -1) {
+    document.getElementById('incompleteMsg').style.display = 'block';
+    document.querySelectorAll('.rank-row')[firstIncomplete].scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  document.getElementById('incompleteMsg').style.display = 'none';
+
+  // Totals per dimension
+  const totals = {D:0,I:0,S:0,C:0};
+  rank.forEach(r => DIMS.forEach((d,ci)=> totals[d] += r[ci]));
+  const winner = DIMS.reduce((a,b)=> totals[a] >= totals[b] ? a : b);
+
+  renderResults(totals, winner);
+  document.getElementById('questionnaire').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
+
+  logToSheet(totals, winner);
+}
+
+function renderResults(totals, winner) {
+  const a = ANIMALS[winner];
+  document.getElementById('animalEmoji').textContent = a.emoji;
+  document.getElementById('animalName').textContent = `You are a ${a.name}`;
+  document.getElementById('animalSub').textContent = a.style + " · " + totals[winner] + " points";
+  document.getElementById('animalDesc').textContent = a.desc;
+
+  const labels = {D:"Lion (D · Directing)", I:"Otter (I · Influencing)", S:"Golden Retriever (S · Steady)", C:"Beaver (C · Cautious)"};
+  document.getElementById('bars').innerHTML = DIMS.map(d => {
+    const pct = Math.round(totals[d]/36*100);
+    return `<div class="bar-row">
+      <div class="bar-label"><span>${labels[d]}</span><span>${totals[d]} / 36</span></div>
+      <div class="bar-track"><div class="bar-fill bar-${d}" style="width:0%">&nbsp;</div></div>
+    </div>`;
+  }).join('');
+  // animate bars
+  setTimeout(()=>{ DIMS.forEach(d=>{ const el=document.querySelector('.bar-'+d); if(el) el.style.width=Math.round(totals[d]/36*100)+'%'; }); }, 60);
+
+  document.getElementById('detail').innerHTML = `
+    <div class="detail-card">
+      <h3>Understanding the ${a.name} (high &ldquo;${winner}&rdquo;)</h3>
+      <p><span class="lbl">Basic motivation:</span> ${a.motivation}</p>
+      <p style="margin-top:6px;"><span class="lbl">Desires situations that allow</span></p>
+      <ul>${a.desires.map(x=>`<li>${x}</li>`).join('')}</ul>
+      <p><span class="lbl">Responds best to others who</span></p>
+      <ul>${a.responds.map(x=>`<li>${x}</li>`).join('')}</ul>
+      <p><span class="lbl">Needs to learn that</span></p>
+      <ul>${a.learn.map(x=>`<li>${x}</li>`).join('')}</ul>
+      <p><span class="lbl">Watch-outs</span></p>
+      <ul>${a.limits.map(x=>`<li>${x}</li>`).join('')}</ul>
+    </div>`;
+  window._lastResult = {totals, winner, animal:a.name};
+}
+
+// ── Logging + download ──────────────────────────────────────────────────────
+function logToSheet(totals, winner) {
+  const status = document.getElementById('saveStatus');
+  if (!ENDPOINT) { status.textContent = "Results ready — logging not configured (you can still download below)."; return; }
+  status.className = "save-status saving"; status.textContent = "Saving your response…";
+  const body = new URLSearchParams();
+  body.append("assessment", ASSESSMENT);
+  body.append("timestamp", new Date().toISOString());
+  body.append("name", document.getElementById('pname').value || "");
+  body.append("email", document.getElementById('pemail').value || "");
+  body.append("D", totals.D); body.append("I", totals.I); body.append("S", totals.S); body.append("C", totals.C);
+  body.append("dominant", ANIMALS[winner].name + " ("+winner+")");
+  body.append("answers", JSON.stringify(rank));
+  fetch(ENDPOINT, { method:"POST", mode:"no-cors", body })
+    .then(()=>{ status.className="save-status saved"; status.textContent="✓ Response saved to Google Sheets."; })
+    .catch(()=>{ status.className="save-status failed"; status.textContent="Could not save automatically — please download your results below."; });
+}
+
+function downloadResults() {
+  const r = window._lastResult; if(!r) return;
+  const rows = [
+    ["Assessment", ASSESSMENT],
+    ["Name", document.getElementById('pname').value || ""],
+    ["Email", document.getElementById('pemail').value || ""],
+    ["Date", new Date().toLocaleString()],
+    [],
+    ["Style","Animal","Score (of 36)"],
+    ["D — Directing","Lion", r.totals.D],
+    ["I — Influencing","Otter", r.totals.I],
+    ["S — Steady","Golden Retriever", r.totals.S],
+    ["C — Cautious","Beaver", r.totals.C],
+    [],
+    ["Dominant style", r.animal]
+  ];
+  const csv = rows.map(row => row.map(cell => `"${String(cell).replace(/"/g,'""')}"`).join(",")).join("\r\n");
+  const blob = new Blob([csv], {type:"text/csv"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "leadership-animal-style-results.csv";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+function retake() {
+  rank = ROWS.map(()=>[0,0,0,0]);
+  ROWS.forEach((_,ri)=>refreshRow(ri));
+  updateProgress();
+  document.getElementById('results').style.display='none';
+  document.getElementById('questionnaire').style.display='block';
+  document.getElementById('saveStatus').textContent='';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+renderRows();
+updateProgress();
+</script>
+</body>
+</html>
